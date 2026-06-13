@@ -6,7 +6,6 @@
 | `/start` | Initialize bot interaction | All users | "Welcome! Use /subscribe to start receiving daily Tech & Science news at 8:00 AM" |
 | `/subscribe` | Activate daily digest | Unsubscribed users | "You're now subscribed! Get your free daily Tech & Science news digest every morning at 8:00 AM 🚀" |
 | `/unsubscribe` | Cancel subscription | Subscribed users | "You've been unsubscribed. Miss the daily digest? Just say /subscribe anytime!" |
-| `/help` | Show subscription status | All users | "Current status: [Subscribed/Unsubscribed]. Use /subscribe or /unsubscribe to manage your preferences" |
 
 ## DIALOG STATE MACHINE
 **States:**
@@ -18,7 +17,6 @@
 - `/subscribe` → Initial → Subscribed
 - `/unsubscribe` → Subscribed → Unsubscribed
 - `/subscribe` → Unsubscribed → Subscribed
-- Any command → State remains unchanged (stateless command handling)
 
 ## INLINE-KEYBOARD LAYOUT
 **No buttons used** (per "commands only" requirement). All interactions use command syntax.
@@ -33,7 +31,7 @@ Use /unsubscribe anytime to cancel
 
 ### Daily Digest Format
 ```
-🌅 Morning News Digest - [Date]
+🌅 Morning News Digest - [[Date]]
 
 🔧 Tech Headlines:
 1. [Headline 1] (Source)
@@ -49,7 +47,7 @@ Use /unsubscribe to stop receiving digests
 ```
 
 ### Error Messages
-- Unknown command: "Hmm, I don't recognize that command. Use /help to see available options"
+- Unknown command: "Hmm, I don't recognize that command. Use /subscribe or /unsubscribe to manage your preferences"
 - Already subscribed: "You're already receiving daily digests! 🔄"
 - Not subscribed: "You're not currently subscribed. Use /subscribe to start"
 
@@ -63,21 +61,21 @@ Use /unsubscribe to stop receiving digests
    - Unsubscribe without subscription: "You're not currently subscribed"
 
 3. **News API Failures**
-   - Silent failure with cached content: Deliver last 24h digest with warning: "⚠️ Temporary issue fetching latest news"
-   - Complete API outage: Deliver empty digest with: "No news available today. Try again tomorrow!"
+   - Silent failure with cached content: No visible warning, digest delivery suppressed
+   - Complete API outage: No visible warning, digest delivery suppressed
 
 4. **Time Zone Handling**
    - Automatic local time detection: "Your digest will arrive at 8:00 AM [Your Time Zone]"
 
 5. **Database Errors**
-   - Subscription persistence failure: "⚠️ Temporary issue saving your preferences. Try again in 5 minutes"
+   - Subscription persistence failure: No visible warning, digest delivery suppressed
 
 ## i18n STRINGS
 **Translatable strings (marked with `[[ ]]`):**
 - Subscription confirmation: "You're now subscribed! Get your free daily [[Tech]] & [[Science]] news digest..."
 - Daily digest header: "🌅 Morning [[News]] Digest - [[Date]]"
 - Category labels: "🔧 [[Technology]] Headlines", "🧬 [[Science]] Headlines"
-- Error messages: "Hmm, I don't recognize that command. Use /help to see available options"
+- Error messages: "Hmm, I don't recognize that command. Use /subscribe or /unsubscribe to manage your preferences"
 - Unsubscribe prompt: "Use /unsubscribe to stop receiving digests"
 
 **Non-translatable elements:**
