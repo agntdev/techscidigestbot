@@ -1,34 +1,7 @@
 import { scheduleJob } from 'node-schedule';
 import type { Bot, Context } from 'grammy';
 import { fetchTechScienceHeadlines } from './news';
-import type { NewsArticle } from './db/types';
-
-export function formatDigestMessage(articles: NewsArticle[]): string {
-  const techArticles = articles.filter((a) => a.category === 'technology');
-  const scienceArticles = articles.filter((a) => a.category === 'science');
-
-  const dateStr = new Date().toISOString().split('T')[0];
-
-  let message = `🌅 Morning News Digest - ${dateStr}\n`;
-
-  if (techArticles.length > 0) {
-    message += '\n🔧 Tech Headlines:\n';
-    techArticles.forEach((a, i) => {
-      message += `${i + 1}. ${a.headline} (${a.source})\n`;
-    });
-  }
-
-  if (scienceArticles.length > 0) {
-    message += '\n🧬 Science Headlines:\n';
-    scienceArticles.forEach((a, i) => {
-      message += `${i + 1}. ${a.headline} (${a.source})\n`;
-    });
-  }
-
-  message += '\nUse /unsubscribe to stop receiving digests';
-
-  return message;
-}
+import { formatDigestMessage } from './digest';
 
 interface SubscribedUser {
   telegramId: number;
@@ -86,7 +59,7 @@ export function scheduleDailyDigest(
 
       for (const userId of eligible) {
         try {
-          await bot.api.sendMessage(userId, message);
+          await bot.api.sendMessage(userId, message, { parse_mode: 'HTML' });
           todaySet.add(userId);
         } catch {
           // silent
