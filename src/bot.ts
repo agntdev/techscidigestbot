@@ -74,6 +74,12 @@ export function createBot(
     );
   });
 
+  bot.on("message", async (ctx) => {
+    await ctx.reply(
+      "I only understand text commands. Use /subscribe or /unsubscribe to manage your digest preferences.",
+    );
+  });
+
   return bot;
 }
 
