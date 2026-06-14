@@ -7,6 +7,7 @@ CREATE TYPE article_category AS ENUM ('technology', 'science');
 CREATE TABLE users (
     telegram_id BIGINT PRIMARY KEY,
     subscription_status subscription_status NOT NULL DEFAULT 'unsubscribed',
+    timezone TEXT NOT NULL DEFAULT 'UTC',
     last_digest_time TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()

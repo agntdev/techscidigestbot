@@ -5,6 +5,7 @@ export type ArticleCategory = 'technology' | 'science';
 export interface User {
   telegram_id: number;
   subscription_status: SubscriptionStatus;
+  timezone: string;
   last_digest_time: Date | null;
   created_at: Date;
   updated_at: Date;
