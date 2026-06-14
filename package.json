@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "grammy": "^1.43.0",
+    "ioredis": "^5.7.0",
     "node-schedule": "^2.1.1"
   }
 }
