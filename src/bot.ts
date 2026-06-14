@@ -2,7 +2,7 @@ import { Bot, Context } from "grammy";
 
 export interface BotDependencies {
   isSubscribed: (telegramId: number) => Promise<boolean>;
-  subscribe: (telegramId: number) => Promise<void>;
+  subscribe: (telegramId: number, timezone: string) => Promise<void>;
   unsubscribe: (telegramId: number) => Promise<void>;
 }
 
@@ -11,6 +11,10 @@ const noopDeps: BotDependencies = {
   subscribe: async () => {},
   unsubscribe: async () => {},
 };
+
+function detectTimezone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+}
 
 export function createBot(
   token: string,
@@ -34,11 +38,12 @@ export function createBot(
       return;
     }
 
-    await deps.subscribe(telegramId);
+    const timezone = detectTimezone();
+    await deps.subscribe(telegramId, timezone);
     await ctx.reply(
-      "You're now subscribed! 📰\n" +
-        "Get your free daily Tech & Science news digest every morning at 8:00 AM 🚀\n" +
-        "Use /unsubscribe anytime to cancel",
+      `You're now subscribed! 📰\n` +
+        `Get your free daily Tech & Science news digest every morning at 8:00 AM ${timezone} 🚀\n` +
+        `Use /unsubscribe anytime to cancel`,
     );
   });
 
